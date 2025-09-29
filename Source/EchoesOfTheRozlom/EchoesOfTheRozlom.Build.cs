@@ -25,7 +25,8 @@ public class EchoesOfTheRozlom : ModuleRules
 			"ModularGameplay",
 			"NetCore",
 			"PhysicsCore",
-            "IrisCore"
+            "IrisCore",
+            "Niagara"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
@@ -37,7 +38,10 @@ public class EchoesOfTheRozlom : ModuleRules
             "EchoesOfTheRozlom/AbilitySystem/Attributes",
             "EchoesOfTheRozlom/AbilitySystem/Executions",
             "EchoesOfTheRozlom/AI",
-			"EchoesOfTheRozlom/Characters",
+			"EchoesOfTheRozlom/Anomalies",
+            "EchoesOfTheRozlom/Anomalies/Actors",
+			"EchoesOfTheRozlom/Anomalies/Data",
+            "EchoesOfTheRozlom/Characters",
             "EchoesOfTheRozlom/Characters/Camera",
             "EchoesOfTheRozlom/Characters/Components",
             "EchoesOfTheRozlom/GameModes",

@@ -140,8 +140,25 @@ void UEotRHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
 			Message.Magnitude = Data.EvaluatedData.Magnitude;
 
-			UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
-			MessageSystem.BroadcastMessage(Message.Verb, Message);
+			if (AActor* OwningActor = GetOwningActor())
+			{
+				if (OwningActor->HasAuthority())
+				{
+					if (UWorld* World = OwningActor->GetWorld())
+					{
+						if (!World->bIsTearingDown)
+						{
+							if (UWorld* CtxWorld = GEngine->GetWorldFromContextObject(
+								World, EGetWorldErrorMode::ReturnNull))
+							{
+								UGameplayMessageSubsystem& MsgSys =
+									UGameplayMessageSubsystem::Get(CtxWorld);
+								MsgSys.BroadcastMessage(Message.Verb, Message);
+							}
+						}
+					}
+				}
+			}
 		}
 
 		// Convert into -Health and then clamp
