@@ -17,6 +17,7 @@
 #include "EotRPlayerController.h"
 #include "Messages/EotRVerbMessage.h"
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystem/Attributes/EotRResonanceSet.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(EotRPlayerState)
 
@@ -37,6 +38,8 @@ AEotRPlayerState::AEotRPlayerState(const FObjectInitializer& ObjectInitializer)
 	// These attribute sets will be detected by AbilitySystemComponent::InitializeComponent. Keeping a reference so that the sets don't get garbage collected before that.
 	HealthSet = CreateDefaultSubobject<UEotRHealthSet>(TEXT("HealthSet"));
 	CombatSet = CreateDefaultSubobject<UEotRCombatSet>(TEXT("CombatSet"));
+	// Resonance attribute set (Stress + ResonanceEnergy)
+	ResonanceSet = CreateDefaultSubobject<UEotRResonanceSet>(TEXT("ResonanceSet"));
 
 	// AbilitySystemComponent needs to be updated at a high frequency.
 	SetNetUpdateFrequency(100.0f);

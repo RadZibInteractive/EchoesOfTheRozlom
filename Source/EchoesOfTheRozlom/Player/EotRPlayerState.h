@@ -18,6 +18,7 @@ class UAbilitySystemComponent;
 class UEotRAbilitySystemComponent;
 class UEotRPawnData;
 class UObject;
+class UEotRResonanceSet;
 struct FFrame;
 struct FGameplayTag;
 
@@ -123,6 +124,10 @@ private:
 	// Combat attribute set used by this actor.
 	UPROPERTY()
 	TObjectPtr<const class UEotRCombatSet> CombatSet;
+
+	// Resonance attribute set (Stress + ResonanceEnergy)
+	UPROPERTY()
+	TObjectPtr<const class UEotRResonanceSet> ResonanceSet;
 
 	UPROPERTY(Replicated)
 	EEotRPlayerConnectionType MyPlayerConnectionType;
