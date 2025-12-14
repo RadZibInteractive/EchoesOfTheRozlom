@@ -3,71 +3,32 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemInterface.h"
-#include "GameplayCueInterface.h"
-#include "GameplayTagAssetInterface.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "Weapons/EotRWeaponHolder.h"
 #include "EotRBaseCharacter.generated.h"
 
-class UInputComponent;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPawnDeathDelegate);
+
 class USkeletalMeshComponent;
-class UCameraComponent;
-class UInputAction;
-struct FInputActionValue;
 class FLifetimeProperty;
 class IRepChangedPropertyTracker;
-class UAbilitySystemComponent;
-class UInputComponent;
-class UEotRAbilitySystemComponent;
-class UEotRHealthComponent;
-class UEotRPawnExtensionComponent;
-struct FGameplayTag;
-struct FGameplayTagContainer;
-
-DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
-
+class AEotRWeapon;
 /**
- *  A basic first person character
+ *  A basic character
  */
 UCLASS(abstract)
-class AEotRBaseCharacter : public ACharacter, public IAbilitySystemInterface, public IGameplayCueInterface, public IGameplayTagAssetInterface
+class AEotRBaseCharacter : public ACharacter, public IEotRWeaponHolder
 {
 	GENERATED_BODY()
 
-	/** Pawn mesh: first person view (arms; seen only by self) */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* FirstPersonMesh;
-
-	/** First person camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* FirstPersonCameraComponent;
-
 protected:
+	/** Pawn mesh: first person view (arms; seen only by self) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* SkeletalMesh;
 
-	/** Jump Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Input")
-	UInputAction* JumpAction;
-
-	/** Move Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Input")
-	UInputAction* MoveAction;
-
-	/** Look Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Input")
-	class UInputAction* LookAction;
-
-	/** Mouse Look Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Input")
-	class UInputAction* MouseLookAction;
-	
 public:
 	AEotRBaseCharacter();
-
-	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
-	virtual bool HasMatchingGameplayTag(FGameplayTag TagToCheck) const override;
-	virtual bool HasAllMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const override;
-	virtual bool HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const override;
 
 	//~AActor interface
 	virtual void PreInitializeComponents() override;
@@ -76,23 +37,10 @@ public:
 	virtual void Reset() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	//~End of AActor interface
 
 protected:
-
-	/** Called from Input Actions for movement input */
-	void MoveInput(const FInputActionValue& Value);
-
-	/** Called from Input Actions for looking input */
-	void LookInput(const FInputActionValue& Value);
-
-	/** Handles aim inputs from either controls or UI interfaces */
-	UFUNCTION(BlueprintCallable, Category="Input")
-	virtual void DoAim(float Yaw, float Pitch);
-
-	/** Handles move inputs from either controls or UI interfaces */
-	UFUNCTION(BlueprintCallable, Category="Input")
-	virtual void DoMove(float Right, float Forward);
 
 	/** Handles jump start inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
@@ -103,22 +51,71 @@ protected:
 	virtual void DoJumpEnd();
 
 protected:
+	/** Name of the first person mesh weapon socket */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapons")
+	FName FirstPersonWeaponSocket = FName("HandGrip_R");
 
-	/** Set up input action bindings */
-	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	/** Name of the third person mesh weapon socket */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapons")
+	FName ThirdPersonWeaponSocket = FName("HandGrip_R");
 
-	virtual void OnAbilitySystemInitialized();
-	virtual void OnAbilitySystemUninitialized();
+	/** List of weapons picked up by the character */
+	TArray<AEotRWeapon*> OwnedWeapons;
+
+	/** Weapon currently equipped and ready to shoot with */
+	TObjectPtr<AEotRWeapon> CurrentWeapon;
+
+public:
+
+	//~Begin IEotRWeaponHolder interface
+
+	/** Attaches a weapon's meshes to the owner */
+	virtual void AttachWeaponMeshes(AEotRWeapon* Weapon) override;
+
+	/** Plays the firing montage for the weapon */
+	virtual void PlayFiringMontage(UAnimMontage* Montage) override;
+
+	/** Applies weapon recoil to the owner */
+	virtual void AddWeaponRecoil(float Recoil) override;
+
+	/** Calculates and returns the aim location for the weapon */
+	virtual FVector GetWeaponTargetLocation() override;
+
+	/** Gives a weapon of this class to the owner */
+	virtual void AddWeaponClass(const TSubclassOf<AEotRWeapon>& WeaponClass) override;
+
+	/** Activates the passed weapon */
+	virtual void OnWeaponActivated(AEotRWeapon* Weapon) override;
+
+	/** Deactivates the passed weapon */
+	virtual void OnWeaponDeactivated(AEotRWeapon* Weapon) override;
+
+	/** Notifies the owner that the weapon cooldown has expired and it's ready to shoot again */
+	virtual void OnSemiWeaponRefire() override;
+
+	//~End IEotRWeaponHolder interface
+
+protected:
+
+	/** Returns true if the character already owns a weapon of the given class */
+	AEotRWeapon* FindWeaponOfType(TSubclassOf<AEotRWeapon> WeaponClass) const;
+
+	/** Handles start firing input */
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	virtual void DoStartFiring();
+
+	/** Handles stop firing input */
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	virtual void DoStopFiring();
+
+	/** Handles switch weapon input */
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	virtual void DoSwitchWeapon();
+
+protected:
 
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void UnPossessed() override;
-
-	virtual void OnRep_Controller() override;
-	virtual void OnRep_PlayerState() override;
-	
-	void InitializeGameplayTags();
-
-	virtual void FellOutOfWorld(const class UDamageType& dmgType) override;
 
 	// Begins the death sequence for the character (disables collision, disables movement, etc...)
 	UFUNCTION()
@@ -138,23 +135,12 @@ protected:
 
 public:
 
-	/** Returns the first person mesh **/
-	USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
+	/** Returns skeletal mesh **/
+	USkeletalMeshComponent* GetSkeletalMesh() const { return SkeletalMesh; }
 
-	/** Returns first person camera component **/
-	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+public:
 
-	UFUNCTION(BlueprintCallable, Category = "EotR|Character")
-	UEotRAbilitySystemComponent* GetEotRAbilitySystemComponent() const;
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
-protected:
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EotR|Character", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UEotRPawnExtensionComponent> PawnExtComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EotR|Character", Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UEotRHealthComponent> HealthComponent;
+	FPawnDeathDelegate OnPawnDeath;
 
 };
 

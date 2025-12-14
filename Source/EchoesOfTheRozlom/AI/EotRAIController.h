@@ -6,7 +6,6 @@
 #include "AIController.h"
 #include "EotRAIController.generated.h"
 
-class UStateTreeAIComponent;
 class UAIPerceptionComponent;
 struct FAIStimulus;
 
@@ -20,20 +19,12 @@ UCLASS(abstract)
 class ECHOESOFTHEROZLOM_API AEotRAIController : public AAIController
 {
 	GENERATED_BODY()
-	
-	/** Runs the behavior StateTree for this NPC */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
-	UStateTreeAIComponent* StateTreeAI;
 
 	/** Detects other actors through sight, hearing and other senses */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UAIPerceptionComponent* AIPerception;
 
 protected:
-
-	/** Team tag for pawn friend or foe identification */
-	UPROPERTY(EditAnywhere, Category="EotR")
-	FName TeamTag = FName("Enemy");
 
 	/** Enemy currently being targeted */
 	TObjectPtr<AActor> TargetEnemy;

@@ -4,90 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "Characters/EotRBaseCharacter.h"
-#include "Weapons/EotRWeaponHolder.h"
 #include "EotRNPC.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPawnDeathDelegate);
-
-class AEotRWeapon;
 
 /**
  *  A simple AI-controlled EotR game NPC
- *  Executes its behavior through a StateTree managed by its AI Controller
- *  Holds and manages a weapon
  */
 UCLASS(abstract)
-class ECHOESOFTHEROZLOM_API AEotRNPC : public AEotRBaseCharacter, public IEotRWeaponHolder
+class ECHOESOFTHEROZLOM_API AEotRNPC : public AEotRBaseCharacter
 {
 	GENERATED_BODY()
 
 public:
 
-	/** Current HP for this character. It dies if it reaches zero through damage */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Damage")
-	float CurrentHP = 100.0f;
+	/** Constructor */
+	AEotRNPC();
 
 protected:
 
 	/** Name of the collision profile to use during ragdoll death */
 	UPROPERTY(EditAnywhere, Category="Damage")
 	FName RagdollCollisionProfile = FName("Ragdoll");
-
-	/** Time to wait after death before destroying this actor */
-	UPROPERTY(EditAnywhere, Category="Damage")
-	float DeferredDestructionTime = 5.0f;
-
-	/** Team byte for this character */
-	UPROPERTY(EditAnywhere, Category="Team")
-	uint8 TeamByte = 1;
-
-	/** Pointer to the equipped weapon */
-	TObjectPtr<AEotRWeapon> Weapon;
-
-	/** Type of weapon to spawn for this character */
-	UPROPERTY(EditAnywhere, Category="Weapon")
-	TSubclassOf<AEotRWeapon> WeaponClass;
-
-	/** Name of the first person mesh weapon socket */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Weapons")
-	FName FirstPersonWeaponSocket = FName("HandGrip_R");
-
-	/** Name of the third person mesh weapon socket */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Weapons")
-	FName ThirdPersonWeaponSocket = FName("HandGrip_R");
-
-	/** Max range for aiming calculations */
-	UPROPERTY(EditAnywhere, Category="Aim")
-	float AimRange = 10000.0f;
-
-	/** Cone variance to apply while aiming */
-	UPROPERTY(EditAnywhere, Category="Aim")
-	float AimVarianceHalfAngle = 10.0f;
-
-	/** Minimum vertical offset from the target center to apply when aiming */
-	UPROPERTY(EditAnywhere, Category="Aim")
-	float MinAimOffsetZ = -35.0f;
-
-	/** Maximum vertical offset from the target center to apply when aiming */
-	UPROPERTY(EditAnywhere, Category="Aim")
-	float MaxAimOffsetZ = -60.0f;
-
-	/** Actor currently being targeted */
-	TObjectPtr<AActor> CurrentAimTarget;
-
-	/** If true, this character is currently shooting its weapon */
-	bool bIsShooting = false;
-
-	/** If true, this character has already died */
-	bool bIsDead = false;
-
-	/** Deferred destruction on death timer */
-	FTimerHandle DeathTimer;
-
-public:
-
-	/** Delegate called when this NPC dies */
-	FPawnDeathDelegate OnPawnDeath;
 
 protected:
 
@@ -131,20 +68,4 @@ public:
 	virtual void OnSemiWeaponRefire() override;
 
 	//~End IEotRWeaponHolder interface
-
-protected:
-
-	/** Called when HP is depleted and the character should die */
-	void Die();
-
-	/** Called after death to destroy the actor */
-	void DeferredDestruction();
-
-public:
-
-	/** Signals this character to start shooting at the passed actor */
-	void StartShooting(AActor* ActorToShoot);
-
-	/** Signals this character to stop shooting */
-	void StopShooting();
 };

@@ -25,14 +25,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category="EotR")
 	TArray<UInputMappingContext*> DefaultMappingContexts;
 
-	/** Character class to respawn when the possessed pawn is destroyed */
-	UPROPERTY(EditAnywhere, Category="EotR")
-	TSubclassOf<AEotRPlayerCharacter> CharacterClass;
-
-	/** Tag to grant the possessed pawn to flag it as the player */
-	UPROPERTY(EditAnywhere, Category="EotR")
-	FName PlayerPawnTag = FName("Player");
-
 protected:
 
 	/** Gameplay Initialization */

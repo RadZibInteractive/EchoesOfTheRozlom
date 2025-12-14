@@ -3,16 +3,12 @@
 
 #include "AI/EotRAIController.h"
 #include "EotRNPC.h"
-#include "Components/StateTreeAIComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "AI/Navigation/PathFollowingAgentInterface.h"
 
 AEotRAIController::AEotRAIController()
 {
-	// create the StateTree component
-	StateTreeAI = CreateDefaultSubobject<UStateTreeAIComponent>(TEXT("StateTreeAI"));
-
 	// create the AI perception component. It will be configured in BP
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 
@@ -28,9 +24,6 @@ void AEotRAIController::OnPossess(APawn* InPawn)
 	// ensure we're possessing an NPC
 	if (AEotRNPC* NPC = Cast<AEotRNPC>(InPawn))
 	{
-		// add the team tag to the pawn
-		NPC->Tags.Add(TeamTag);
-
 		// subscribe to the pawn's OnDeath delegate
 		NPC->OnPawnDeath.AddDynamic(this, &AEotRAIController::OnPawnDeath);
 	}
@@ -40,9 +33,6 @@ void AEotRAIController::OnPawnDeath()
 {
 	// stop movement
 	GetPathFollowingComponent()->AbortMove(*this, FPathFollowingResultFlags::UserAbort);
-
-	// stop StateTree logic
-	StateTreeAI->StopLogic(FString(""));
 
 	// unpossess the pawn
 	UnPossess();
