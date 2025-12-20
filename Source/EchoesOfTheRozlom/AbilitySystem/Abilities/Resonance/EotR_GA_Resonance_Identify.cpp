@@ -15,7 +15,7 @@ UGA_Resonance_Identify::UGA_Resonance_Identify()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
 	// Optional: block Identify if the player is extremely stressed
-	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("State.Resonance.Stressed")));
+	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("State.Resonance.Overstressed")));
 
 	// Client can predict activation to reduce input delay
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
