@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GameplayAbility.h"
+#include "AbilitySystem/Abilities/EotRGameplayAbility.h" 
 #include "EotR_GA_Resonance_Identify.generated.h"
 
 // Forward declarations
@@ -16,14 +16,15 @@ class AEotRAnomalyAreaBase;
  * It does NOT apply GE, does NOT enter anomalies, and does NOT cause damage.
  * It only highlights anomalies via the IEotRIdentifiableAnomaly interface.
  */
-UCLASS()
-class ECHOESOFTHEROZLOM_API UGA_Resonance_Identify : public UGameplayAbility
+UCLASS(Blueprintable)
+class ECHOESOFTHEROZLOM_API UGA_Resonance_Identify : public UEotRGameplayAbility
 {
 	GENERATED_BODY()
 
 public:
 
 	UGA_Resonance_Identify();
+
 
 	/** How far the Identify ability scans around the player */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Identify")
@@ -41,6 +42,14 @@ protected:
 
 	/** Timer for periodic scanning */
 	FTimerHandle ScanTimerHandle;
+
+	/** GameplayEffect used to add Stress while Identify is active */
+	UPROPERTY(EditDefaultsOnly, Category = "Resonance|Stress")
+	TSubclassOf<UGameplayEffect> StressTickEffect;
+
+	/** Percentage of StressMax at which Identify auto-cancels */
+	UPROPERTY(EditDefaultsOnly, Category = "Resonance|Stress")
+	float OverstressThreshold = 0.85f;
 
 	/** All anomalies currently highlighted by Identify */
 	UPROPERTY()

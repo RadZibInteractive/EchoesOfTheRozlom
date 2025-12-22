@@ -1,4 +1,4 @@
-// � 2025 RadZib. All rights reserved.
+﻿// © 2025 RadZib. All rights reserved.
 
 #include "Abilities/Resonance/EotR_GA_Resonance_Identify.h"
 #include "Kismet/GameplayStatics.h"
@@ -7,6 +7,8 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/EotRResonanceSet.h"
 
 
 UGA_Resonance_Identify::UGA_Resonance_Identify()
@@ -110,6 +112,37 @@ void UGA_Resonance_Identify::PerformScan()
 
 	// --- 4. Stress cost tick ---
 	ApplyStress();
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC || !StressTickEffect)
+	{
+		return;
+	}
+
+	// Apply Stress GE every scan tick
+	ASC->ApplyGameplayEffectToSelf(
+		StressTickEffect.GetDefaultObject(),
+		1.f,
+		ASC->MakeEffectContext()
+	);
+
+	// Read Stress values
+	const float CurrentStress =
+		ASC->GetNumericAttribute(UEotRResonanceSet::GetStressAttribute());
+
+	const float MaxStress =
+		ASC->GetNumericAttribute(UEotRResonanceSet::GetStressMaxAttribute());
+
+	// If overstressed → cancel Identify
+	if (MaxStress > 0.f && CurrentStress >= MaxStress * OverstressThreshold)
+	{
+		ASC->AddLooseGameplayTag(
+			FGameplayTag::RequestGameplayTag(TEXT("State.Resonance.Stressed"))
+		);
+
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	}
+
 }
 
 void UGA_Resonance_Identify::ApplyStress()
