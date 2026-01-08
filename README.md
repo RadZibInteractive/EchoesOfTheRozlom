@@ -1,28 +1,39 @@
-  Echoes of the Rozlom
-  
-  Private Unreal Engine project
-  Internal development repository.
+# Echoes of the Rozlom
 
-  Requirements:
-  Unreal Engine 5.6.
-  Visual Studio 2022.
-  Git + Git LFS.
+**Private Unreal Engine project**  
+Internal development repository.
 
-  Git LFS (Required)
-  This project uses Git LFS for Unreal Engine assets.
+---
 
-  Before working with the repository:
-  git lfs install
-  git lfs pull
+## Requirements
 
-  Without Git LFS, .uasset / .umap files will not work correctly.
+- Unreal Engine **5.6**
+- Visual Studio **2022**
+- Git + **Git LFS**
 
-  Workflow:
-  main – stable development branch.
-  Feature branches for active work.
-  No direct commits to main.
+---
 
-  Notes:
-  Do not remove Git LFS.
-  Do not commit generated files.
-  Keep commits clean and scoped.
+## Git LFS (Required)
+
+This project uses **Git LFS** for Unreal Engine assets.
+
+Before working with the repository:
+
+```bash
+git lfs install
+git lfs pull
+ ``` 
+ 
+## Workflow
+
+- `main` — stable development branch
+- Feature branches for active work
+- No direct commits to `main`
+
+---
+
+## Notes
+
+- Do not remove Git LFS
+- Do not commit generated files
+- Keep commits clean and scoped
