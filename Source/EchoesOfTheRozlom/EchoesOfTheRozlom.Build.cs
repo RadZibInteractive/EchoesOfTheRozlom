@@ -15,17 +15,12 @@ public class EchoesOfTheRozlom : ModuleRules
 			"InputCore",
 			"EnhancedInput",
 			"AIModule",
-			"StateTreeModule",
-			"GameplayStateTreeModule",
 			"UMG",
-			"GameplayAbilities",
-			"GameplayTags",
-			"GameplayTasks",
-			"GameplayMessageRuntime",
-			"ModularGameplay",
-			"NetCore",
+            "GameplayAbilities",
+            "GameplayTags",
+            "GameplayTasks",
+            "NetCore",
 			"PhysicsCore",
-            "IrisCore",
             "Niagara"
         });
 
@@ -33,24 +28,18 @@ public class EchoesOfTheRozlom : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] {
 			"EchoesOfTheRozlom",
-            "EchoesOfTheRozlom/AbilitySystem",
-            "EchoesOfTheRozlom/AbilitySystem/Abilities",
-            "EchoesOfTheRozlom/AbilitySystem/Attributes",
-            "EchoesOfTheRozlom/AbilitySystem/Executions",
             "EchoesOfTheRozlom/AI",
-			"EchoesOfTheRozlom/Anomalies",
-            "EchoesOfTheRozlom/Anomalies/Actors",
-			"EchoesOfTheRozlom/Anomalies/Data",
             "EchoesOfTheRozlom/Characters",
             "EchoesOfTheRozlom/Characters/Camera",
             "EchoesOfTheRozlom/Characters/Components",
-            "EchoesOfTheRozlom/GameModes",
-            "EchoesOfTheRozlom/Items",
+            "EchoesOfTheRozlom/FrameworkBase",
             "EchoesOfTheRozlom/Player",
             "EchoesOfTheRozlom/Weapons",
-            "EchoesOfTheRozlom/System",
-            "EchoesOfTheRozlom/Messages",
-            "EchoesOfTheRozlom/Physics"
+            "EchoesOfTheRozlom/Systems",
+            "EchoesOfTheRozlom/Systems/Anomalies",
+            "EchoesOfTheRozlom/Data/DataAssets",
+            "EchoesOfTheRozlom/Data/Structs",
+            "EchoesOfTheRozlom/Data/Enums",
         });
 
 		// Uncomment if you are using Slate UI

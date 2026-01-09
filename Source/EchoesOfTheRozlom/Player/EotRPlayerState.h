@@ -57,6 +57,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "EotR|PlayerState")
 	UEotRAbilitySystemComponent* GetEotRAbilitySystemComponent() const { return AbilitySystemComponent; }
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	template <class T>
@@ -99,7 +100,6 @@ public:
 	bool HasStatTag(FGameplayTag Tag) const;
 
 	// Send a message to just this player
-	// (use only for client notifications like accolades, quest toasts, etc... that can handle being occasionally lost)
 	UFUNCTION(Client, Unreliable, BlueprintCallable, Category = "EotR|PlayerState")
 	void ClientBroadcastMessage(const FEotRVerbMessage Message);
 
@@ -108,12 +108,10 @@ protected:
 	void OnRep_PawnData();
 
 protected:
-
 	UPROPERTY(ReplicatedUsing = OnRep_PawnData)
 	TObjectPtr<const UEotRPawnData> PawnData;
 
 private:
-
 	// The ability system component sub-object used by player characters.
 	UPROPERTY(VisibleAnywhere, Category = "EotR|PlayerState")
 	TObjectPtr<UEotRAbilitySystemComponent> AbilitySystemComponent;
@@ -121,6 +119,7 @@ private:
 	// Health attribute set used by this actor.
 	UPROPERTY()
 	TObjectPtr<const class UEotRHealthSet> HealthSet;
+
 	// Combat attribute set used by this actor.
 	UPROPERTY()
 	TObjectPtr<const class UEotRCombatSet> CombatSet;
