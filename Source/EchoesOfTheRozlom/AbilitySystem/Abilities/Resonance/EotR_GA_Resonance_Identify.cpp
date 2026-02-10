@@ -1,9 +1,9 @@
 ﻿// © 2025 RadZib. All rights reserved.
 
-#include "Abilities/Resonance/EotR_GA_Resonance_Identify.h"
+#include "EotR_GA_Resonance_Identify.h"
 #include "Kismet/GameplayStatics.h"
-#include "Anomalies/Actors/EotRAnomalyAreaBase.h"
-#include "Interfaces/EotRIdentifiableAnomaly.h"
+#include "Systems/Anomalies/EotRAnomalyAreaBase.h"
+#include "Anomalies/Interfaces/EotRIdentifiableAnomaly.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Kismet/KismetSystemLibrary.h"

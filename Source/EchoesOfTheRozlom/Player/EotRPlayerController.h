@@ -4,6 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "AbilitySystem/EotRAbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/EotRHealthSet.h"
+#include "AbilitySystem/Attributes/EotRCombatSet.h"
+#include "Messages/EotRVerbMessage.h"
+#include "Player/EotRPawnData.h"
 #include "EotRPlayerController.generated.h"
 
 class UInputMappingContext;
