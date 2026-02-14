@@ -21,7 +21,10 @@ public class EchoesOfTheRozlom : ModuleRules
             "GameplayTasks",
             "NetCore",
 			"PhysicsCore",
-            "Niagara"
+            "Niagara",
+            "DeveloperSettings",
+            "AnimGraphRuntime",
+			"MotionWarping"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

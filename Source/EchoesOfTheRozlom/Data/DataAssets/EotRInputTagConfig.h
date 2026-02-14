@@ -1,0 +1,31 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Engine/DataAsset.h"
+#include "GameplayTagContainer.h"
+#include "EotRInputTagConfig.generated.h"
+
+class UInputAction;
+
+USTRUCT()
+struct ECHOESOFTHEROZLOM_API FEotRTaggedInputAction
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UInputAction> InputAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	FGameplayTag InputTag;
+};
+
+UCLASS()
+class ECHOESOFTHEROZLOM_API UEotRInputTagConfig : public UDataAsset
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TArray<FEotRTaggedInputAction> TaggedInputActions;
+};

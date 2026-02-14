@@ -3,7 +3,7 @@
 #include "EotRPlayerState.h"
 
 #include "Engine/World.h"
-#include "FrameworkBase/EotRBaseGameMode.h"
+#include "FrameworkBase/EotRGameMode.h"
 #include "EotRLogChannels.h"
 #include "EotRPlayerController.h"
 #include "Net/UnrealNetwork.h"

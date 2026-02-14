@@ -36,3 +36,32 @@ namespace EotRGameplayTags
 	}
 }
 
+namespace EotRTags
+{
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Camera_Look, "Ability.Camera.Look");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Move, "Ability.Movement.Move");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Traversal, "Ability.Movement.Traversal");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Run, "Ability.Movement.Run");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Sprint, "Ability.Movement.Sprint");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Crouch, "Ability.Movement.Crouch");
+
+	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Traversing, "State.Movement.Traversing");
+	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Running, "State.Movement.Running");
+	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Run_Disabled, "State.Movement.Run.Disabled");
+	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Run_Enabled, "State.Movement.Run.Enabled");
+	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Sprinting, "State.Movement.Sprinting");
+	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Crouching, "State.Movement.Crouching");
+
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Jump, "Foley.Event.Jump");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Land, "Foley.Event.Land");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Handplant, "Foley.Event.Handplant");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Run, "Foley.Event.Run");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_RunBackwds, "Foley.Event.RunBackwds");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_RunStrafe, "Foley.Event.RunStrafe");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Scuff, "Foley.Event.Scuff");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_ScuffPivot, "Foley.Event.ScuffPivot");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_ScuffWall, "Foley.Event.ScuffWall");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Tumble, "Foley.Event.Tumble");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Walk, "Foley.Event.Walk");
+	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_WalkBackwds, "Foley.Event.WalkBackwds");
+}

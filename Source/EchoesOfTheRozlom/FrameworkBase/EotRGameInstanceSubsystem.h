@@ -1,0 +1,27 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "GameplayTagContainer.h"
+#include "EotRGameInstanceSubsystem.generated.h"
+
+class UEotRSoundTagConfig;
+class USoundBase;
+
+UCLASS()
+class ECHOESOFTHEROZLOM_API UEotRGameInstanceSubsystem : public UGameInstanceSubsystem
+{
+	GENERATED_BODY()
+
+public:
+	// UGameInstanceSubsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
+	// Sound
+	USoundBase* GetSoundByTag(const FGameplayTag& Tag) const;
+
+private:
+	// Sound
+	UPROPERTY(Transient)
+	TObjectPtr<const UEotRSoundTagConfig> SoundTagConfig = nullptr;
+};

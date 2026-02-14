@@ -29,3 +29,33 @@ namespace EotRGameplayTags
 
 	ECHOESOFTHEROZLOM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GC_Anomaly_Toxic_Inside);
 };
+
+namespace EotRTags
+{
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Camera_Look);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Movement_Move);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Movement_Traversal);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Movement_Run);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Movement_Sprint);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Movement_Crouch);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Traversing);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Running);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Run_Disabled);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Run_Enabled);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Sprinting);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Crouching);
+
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Jump);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Land);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Handplant);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Run);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_RunBackwds);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_RunStrafe);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Scuff);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_ScuffPivot);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_ScuffWall);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Tumble);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_Walk);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Foley_Event_WalkBackwds);
+}

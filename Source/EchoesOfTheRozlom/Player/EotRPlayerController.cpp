@@ -1,39 +1,32 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
-
 #include "Player/EotRPlayerController.h"
-#include "EnhancedInputSubsystems.h"
-#include "Engine/LocalPlayer.h"
+#include "FrameworkBase/EotRLocalPlayerSubsystem.h"
 #include "InputMappingContext.h"
-#include "Kismet/GameplayStatics.h"
-#include "GameFramework/PlayerStart.h"
-#include "Characters/EotRPlayerCharacter.h"
+#include "EnhancedInputSubsystems.h"
 
-void AEotRPlayerController::BeginPlay()
+void AEotRPlayerController::InitInputSystem()
 {
-	Super::BeginPlay();
-}
+	Super::InitInputSystem();
 
-void AEotRPlayerController::SetupInputComponent()
-{
-	// add the input mapping contexts
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	const ULocalPlayer* LocalPlayer = GetLocalPlayer();
+	if (!LocalPlayer)
 	{
-		for (UInputMappingContext* CurrentContext : DefaultMappingContexts)
-		{
-			Subsystem->AddMappingContext(CurrentContext, 0);
-		}
+		return;
 	}
-}
 
-void AEotRPlayerController::OnPossess(APawn* InPawn)
-{
-	Super::OnPossess(InPawn);
+	const UEotRLocalPlayerSubsystem* LocalPlayerSubsystem = LocalPlayer->GetSubsystem<UEotRLocalPlayerSubsystem>();
+	if (!LocalPlayerSubsystem)
+	{
+		return;
+	}
 
-	// subscribe to the pawn's OnDestroyed delegate
-	InPawn->OnDestroyed.AddUniqueDynamic(this, &AEotRPlayerController::OnPawnDestroyed);
-}
+	const UInputMappingContext* InputMappingContext = LocalPlayerSubsystem->GetInputMappingContext();
+	if (!InputMappingContext)
+	{
+		return;
+	}
 
-void AEotRPlayerController::OnPawnDestroyed(AActor* DestroyedActor)
-{
+	if (UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+	{
+		EnhancedInputSubsystem->AddMappingContext(InputMappingContext, 0);
+	}
 }
