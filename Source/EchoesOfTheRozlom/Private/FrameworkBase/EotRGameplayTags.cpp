@@ -11,33 +11,6 @@ namespace EotRGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(SetByCaller_Damage, "SetByCaller.Damage", "SetByCaller tag used by damage gameplay effects.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(SetByCaller_Heal, "SetByCaller.Heal", "SetByCaller tag used by healing gameplay effects.");
 
-	FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString)
-	{
-		const UGameplayTagsManager& Manager = UGameplayTagsManager::Get();
-		FGameplayTag Tag = Manager.RequestGameplayTag(FName(*TagString), false);
-
-		if (!Tag.IsValid() && bMatchPartialString)
-		{
-			FGameplayTagContainer AllTags;
-			Manager.RequestAllGameplayTags(AllTags, true);
-
-			for (const FGameplayTag& TestTag : AllTags)
-			{
-				if (TestTag.ToString().Contains(TagString))
-				{
-					UE_LOG(LogEotR, Display, TEXT("Could not find exact match for tag [%s] but found partial match on tag [%s]."), *TagString, *TestTag.ToString());
-					Tag = TestTag;
-					break;
-				}
-			}
-		}
-
-		return Tag;
-	}
-}
-
-namespace EotRTags
-{
 	UE_DEFINE_GAMEPLAY_TAG(Ability_Camera_Look, "Ability.Camera.Look");
 	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Move, "Ability.Movement.Move");
 	UE_DEFINE_GAMEPLAY_TAG(Ability_Movement_Traversal, "Ability.Movement.Traversal");
@@ -64,4 +37,28 @@ namespace EotRTags
 	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Tumble, "Foley.Event.Tumble");
 	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_Walk, "Foley.Event.Walk");
 	UE_DEFINE_GAMEPLAY_TAG(Foley_Event_WalkBackwds, "Foley.Event.WalkBackwds");
+
+	FGameplayTag FindTagByString(const FString& TagString, bool bMatchPartialString)
+	{
+		const UGameplayTagsManager& Manager = UGameplayTagsManager::Get();
+		FGameplayTag Tag = Manager.RequestGameplayTag(FName(*TagString), false);
+
+		if (!Tag.IsValid() && bMatchPartialString)
+		{
+			FGameplayTagContainer AllTags;
+			Manager.RequestAllGameplayTags(AllTags, true);
+
+			for (const FGameplayTag& TestTag : AllTags)
+			{
+				if (TestTag.ToString().Contains(TagString))
+				{
+					UE_LOG(LogEotR, Display, TEXT("Could not find exact match for tag [%s] but found partial match on tag [%s]."), *TagString, *TestTag.ToString());
+					Tag = TestTag;
+					break;
+				}
+			}
+		}
+
+		return Tag;
+	}
 }

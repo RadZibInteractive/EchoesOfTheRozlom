@@ -4,9 +4,11 @@
 
 UEotRGA_Sprint::UEotRGA_Sprint()
 {
-	AbilityTags.AddTag(EotRTags::Ability_Movement_Sprint);
+	FGameplayTagContainer Tags = GetAssetTags();
+	Tags.AddTag(EotRGameplayTags::Ability_Movement_Sprint);
+	SetAssetTags(Tags);
 
-	ActivationBlockedTags.AddTag(EotRTags::State_Movement_Crouching);
+	ActivationBlockedTags.AddTag(EotRGameplayTags::State_Movement_Crouching);
 }
 
 void UEotRGA_Sprint::ActivateAbility(
@@ -25,19 +27,19 @@ void UEotRGA_Sprint::ActivateAbility(
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Sprinting))
+	if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Sprinting))
 	{
 		CancelAbility(Handle, ActorInfo, ActivationInfo, true);
 		return;
 	}
 
-	if (!ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Running))
+	if (!ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Running))
 	{
-		ASC->AddLooseGameplayTag(EotRTags::State_Movement_Running);
-		ASC->AddLooseGameplayTag(EotRTags::State_Movement_Run_Enabled);
+		ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Running);
+		ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Run_Enabled);
 	}
 
-	ASC->AddLooseGameplayTag(EotRTags::State_Movement_Sprinting);
+	ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Sprinting);
 }
 
 void UEotRGA_Sprint::CancelAbility(
@@ -54,13 +56,13 @@ void UEotRGA_Sprint::CancelAbility(
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Run_Enabled))
+	if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Run_Enabled))
 	{
-		ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Running);
-		ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Run_Enabled);
+		ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Running);
+		ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Run_Enabled);
 	}
 
-	ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Sprinting);
+	ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Sprinting);
 
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 }

@@ -18,7 +18,7 @@
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/EotRAbilitySystemComponent.h"
 
 
 void AEotRHumanCharacter::PostInitializeComponents()
@@ -155,7 +155,7 @@ void AEotRHumanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 void AEotRHumanCharacter::OnInputTagTriggered(const FInputActionValue& ActionValue, FGameplayTag InputTag)
 {
-	if (InputTag == EotRTags::Ability_Movement_Move)
+	if (InputTag == EotRGameplayTags::Ability_Movement_Move)
 	{
 		const FVector2D MoveValue = ActionValue.Get<FVector2D>();
 
@@ -164,7 +164,7 @@ void AEotRHumanCharacter::OnInputTagTriggered(const FInputActionValue& ActionVal
 
 		return;
 	}
-	else if (InputTag == EotRTags::Ability_Camera_Look)
+	else if (InputTag == EotRGameplayTags::Ability_Camera_Look)
 	{
 		const FVector2D LookValue = ActionValue.Get<FVector2D>();
 

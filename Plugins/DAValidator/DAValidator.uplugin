@@ -1,0 +1,21 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "DAValidator",
+  "Description": "DataAsset validator.",
+  "Category": "Editor",
+  "CreatedBy": "Vladyslav Guba",
+  "CreatedByURL": "https://github.com/vladguba",
+  "CanContainContent": false,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Modules": [
+    {
+      "Name": "DAValidator",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

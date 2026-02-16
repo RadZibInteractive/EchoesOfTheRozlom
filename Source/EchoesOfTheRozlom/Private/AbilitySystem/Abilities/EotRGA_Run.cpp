@@ -4,10 +4,12 @@
 
 UEotRGA_Run::UEotRGA_Run()
 {
-	AbilityTags.AddTag(EotRTags::Ability_Movement_Run);
+	FGameplayTagContainer Tags = GetAssetTags();
+	Tags.AddTag(EotRGameplayTags::Ability_Movement_Run);
+	SetAssetTags(Tags);
 
-	ActivationBlockedTags.AddTag(EotRTags::State_Movement_Crouching);
-	ActivationBlockedTags.AddTag(EotRTags::State_Movement_Sprinting);
+	ActivationBlockedTags.AddTag(EotRGameplayTags::State_Movement_Crouching);
+	ActivationBlockedTags.AddTag(EotRGameplayTags::State_Movement_Sprinting);
 }
 
 void UEotRGA_Run::ActivateAbility(
@@ -26,13 +28,13 @@ void UEotRGA_Run::ActivateAbility(
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Running))
+	if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Running))
 	{
 		CancelAbility(Handle, ActorInfo, ActivationInfo, true);
 		return;
 	}
 
-	ASC->AddLooseGameplayTag(EotRTags::State_Movement_Running);
+	ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Running);
 }
 
 void UEotRGA_Run::CancelAbility(
@@ -49,7 +51,7 @@ void UEotRGA_Run::CancelAbility(
 		return;
 	}
 
-	ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Running);
+	ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Running);
 
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
 }

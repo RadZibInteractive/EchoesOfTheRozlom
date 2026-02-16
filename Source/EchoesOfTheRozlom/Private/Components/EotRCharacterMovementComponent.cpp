@@ -52,7 +52,7 @@ void UEotRCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previo
 			SpeedXY
 		);
 
-		PlayFoley(EotRTags::Foley_Event_Jump, VolumeMultiplier);
+		PlayFoley(EotRGameplayTags::Foley_Event_Jump, VolumeMultiplier);
 	}
 
 	if (MovementMode == MOVE_Walking && PreviousMovementMode == MOVE_Falling)
@@ -66,7 +66,7 @@ void UEotRCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previo
 			Velocity.Z
 		);
 
-		PlayFoley(EotRTags::Foley_Event_Land, VolumeMultiplier);
+		PlayFoley(EotRGameplayTags::Foley_Event_Land, VolumeMultiplier);
 
 		if (UWorld* World = GetWorld())
 		{	
@@ -89,13 +89,13 @@ void UEotRCharacterMovementComponent::PlayFoley(const FGameplayTag& Tag, float V
 	}
 
 	FGameplayTagContainer GroundTags;
-	GroundTags.AddTag(EotRTags::Foley_Event_Run);
-	GroundTags.AddTag(EotRTags::Foley_Event_RunBackwds);
-	GroundTags.AddTag(EotRTags::Foley_Event_RunStrafe);
-	GroundTags.AddTag(EotRTags::Foley_Event_Scuff);
-	GroundTags.AddTag(EotRTags::Foley_Event_ScuffPivot);
-	GroundTags.AddTag(EotRTags::Foley_Event_Walk);
-	GroundTags.AddTag(EotRTags::Foley_Event_WalkBackwds);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_Run);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_RunBackwds);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_RunStrafe);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_Scuff);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_ScuffPivot);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_Walk);
+	GroundTags.AddTag(EotRGameplayTags::Foley_Event_WalkBackwds);
 
 	const bool bIsGroundTag = GroundTags.HasTag(Tag);
 
@@ -104,7 +104,7 @@ void UEotRCharacterMovementComponent::PlayFoley(const FGameplayTag& Tag, float V
 	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(CharacterOwner))
 	{
 		UAbilitySystemComponent* ASC = ASCInterface->GetAbilitySystemComponent();
-		if (ASC && ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Traversing))
+		if (ASC && ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Traversing))
 		{
 			bIsTraversing = true;
 		}
@@ -153,11 +153,11 @@ void UEotRCharacterMovementComponent::UpdateMovement(float DeltaTime)
 	{
 		if (UAbilitySystemComponent* ASC = ASCInterface->GetAbilitySystemComponent())
 		{
-			if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Crouching))
+			if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Crouching))
 			{
 				MovementGait = EEotRMovementGait::Crouch;
 			}
-			else if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Sprinting))
+			else if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Sprinting))
 			{
 				if (CanSprint())
 				{
@@ -165,11 +165,11 @@ void UEotRCharacterMovementComponent::UpdateMovement(float DeltaTime)
 				}
 				else {
 					FGameplayTagContainer TagContainer;
-					TagContainer.AddTag(EotRTags::Ability_Movement_Sprint);
+					TagContainer.AddTag(EotRGameplayTags::Ability_Movement_Sprint);
 
 					ASC->CancelAbilities(&TagContainer);
 
-					if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Running))
+					if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Running))
 					{
 						MovementGait = EEotRMovementGait::Run;
 					}
@@ -179,7 +179,7 @@ void UEotRCharacterMovementComponent::UpdateMovement(float DeltaTime)
 					}
 				}
 			}
-			else if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Running))
+			else if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Running))
 			{
 				MovementGait = EEotRMovementGait::Run;
 			}

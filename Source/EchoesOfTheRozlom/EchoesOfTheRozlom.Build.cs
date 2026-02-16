@@ -9,7 +9,21 @@ public class EchoesOfTheRozlom : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayAbilities", "GameplayTasks", "GameplayTags", "DeveloperSettings", "AIModule", "AnimGraphRuntime", "MotionWarping", "Niagara" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", 
+            "CoreUObject", 
+            "Engine", 
+            "InputCore", 
+            "EnhancedInput", 
+            "GameplayAbilities", 
+            "GameplayTasks", 
+            "GameplayTags", 
+            "DeveloperSettings", 
+            "AIModule", 
+            "AnimGraphRuntime", 
+            "MotionWarping", 
+            "Niagara",
+            "DAForgeRuntime"
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

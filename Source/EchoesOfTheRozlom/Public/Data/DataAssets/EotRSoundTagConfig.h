@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/DataAsset.h"
+#include "ForgeDataAsset.h"
 #include "GameplayTagContainer.h"
 #include "EotRSoundTagConfig.generated.h"
 
@@ -21,7 +21,7 @@ public:
 };
 
 UCLASS()
-class ECHOESOFTHEROZLOM_API UEotRSoundTagConfig : public UDataAsset
+class ECHOESOFTHEROZLOM_API UEotRSoundTagConfig : public UForgeDataAsset
 {
 	GENERATED_BODY()
 

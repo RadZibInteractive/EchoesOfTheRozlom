@@ -6,7 +6,7 @@
 #include "Components/CapsuleComponent.h"
 
 #include "Components/EotRCharacterMovementComponent.h"
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/EotRAbilitySystemComponent.h"
 #include "Abilities/GameplayAbility.h"
 
 AEotRBaseCharacter::AEotRBaseCharacter(const FObjectInitializer& ObjectInitializer)
@@ -20,7 +20,7 @@ AEotRBaseCharacter::AEotRBaseCharacter(const FObjectInitializer& ObjectInitializ
 	LowerMesh->SetRelativeLocation(FVector(0.f, 0.f, -Capsule->GetUnscaledCapsuleHalfHeight() - 2.f));
 	LowerMesh->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent = CreateDefaultSubobject<UEotRAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 }
 
 void AEotRBaseCharacter::PossessedBy(AController* NewController)
@@ -53,6 +53,16 @@ FEotRLandingInfo AEotRBaseCharacter::GetLastLandingInfo() const
 		return EotRMoveComp->GetCurrentLandingInfo();
 	}
 	return FEotRLandingInfo();
+}
+
+UAbilitySystemComponent* AEotRBaseCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent.Get();
+}
+
+UEotRAbilitySystemComponent* AEotRBaseCharacter::GetEotRASC() const
+{
+	return AbilitySystemComponent.Get();
 }
 
 void AEotRBaseCharacter::PostInitializeComponents()

@@ -6,9 +6,11 @@
 
 UEotRGA_Crouch::UEotRGA_Crouch()
 {
-	AbilityTags.AddTag(EotRTags::Ability_Movement_Crouch);
+	FGameplayTagContainer Tags = GetAssetTags();
+	Tags.AddTag(EotRGameplayTags::Ability_Movement_Crouch);
+	SetAssetTags(Tags);
 
-	ActivationBlockedTags.AddTag(EotRTags::State_Movement_Sprinting);
+	ActivationBlockedTags.AddTag(EotRGameplayTags::State_Movement_Sprinting);
 }
 
 void UEotRGA_Crouch::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
@@ -17,7 +19,7 @@ void UEotRGA_Crouch::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, c
 
 	if (ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor.Get()))
 	{
-		Character->GetCharacterMovement()->CrouchedHalfHeight = 60.f;
+		Character->GetCharacterMovement()->SetCrouchedHalfHeight(60.f);
 		Character->GetCharacterMovement()->bCanWalkOffLedgesWhenCrouching = true;
 		Character->GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 	}
@@ -39,18 +41,18 @@ void UEotRGA_Crouch::ActivateAbility(
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Crouching))
+	if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Crouching))
 	{
 		CancelAbility(Handle, ActorInfo, ActivationInfo, true);
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Running))
+	if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Running))
 	{
-		ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Running);
-		ASC->AddLooseGameplayTag(EotRTags::State_Movement_Run_Disabled);
+		ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Running);
+		ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Run_Disabled);
 	}
-	ASC->AddLooseGameplayTag(EotRTags::State_Movement_Crouching);
+	ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Crouching);
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor.Get());
 	if (Character)
@@ -68,13 +70,13 @@ void UEotRGA_Crouch::CancelAbility(const FGameplayAbilitySpecHandle Handle, cons
 		return;
 	}
 
-	if (ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Run_Disabled))
+	if (ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Run_Disabled))
 	{
-		ASC->AddLooseGameplayTag(EotRTags::State_Movement_Running);
-		ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Run_Disabled);
+		ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Running);
+		ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Run_Disabled);
 	}
 
-	ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Crouching);
+	ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Crouching);
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->AvatarActor.Get());
 	if (Character)

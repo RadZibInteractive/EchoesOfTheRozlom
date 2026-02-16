@@ -16,9 +16,11 @@ UEotRGA_Traversal::UEotRGA_Traversal()
 {
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
-	AbilityTags.AddTag(EotRTags::Ability_Movement_Traversal);
+    FGameplayTagContainer Tags = GetAssetTags();
+    Tags.AddTag(EotRGameplayTags::Ability_Movement_Traversal);
+    SetAssetTags(Tags);
 
-    ActivationBlockedTags.AddTag(EotRTags::State_Movement_Traversing);
+    ActivationBlockedTags.AddTag(EotRGameplayTags::State_Movement_Traversing);
 }
 
 void UEotRGA_Traversal::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
@@ -127,7 +129,7 @@ void UEotRGA_Traversal::CancelAbility(
         return;
     }
 
-    ASC->RemoveLooseGameplayTag(EotRTags::State_Movement_Traversing);
+    ASC->RemoveLooseGameplayTag(EotRGameplayTags::State_Movement_Traversing);
 
     ACharacter* Character = Cast<ACharacter>(CurrentActorInfo->AvatarActor.Get());
     if (!Character)
@@ -165,7 +167,7 @@ void UEotRGA_Traversal::OnMontageBlendedIn()
     UAbilitySystemComponent* ASC = CurrentActorInfo->AbilitySystemComponent.Get();
     if (ASC)
     {
-        ASC->AddLooseGameplayTag(EotRTags::State_Movement_Traversing);
+        ASC->AddLooseGameplayTag(EotRGameplayTags::State_Movement_Traversing);
     }
 
     if (ACharacter* Character = Cast<ACharacter>(CurrentActorInfo->AvatarActor.Get()))

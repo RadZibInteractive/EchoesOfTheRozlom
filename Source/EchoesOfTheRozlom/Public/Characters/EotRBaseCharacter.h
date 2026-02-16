@@ -12,40 +12,17 @@
 #include "Interfaces/CombatInterface.h"
 #include "Interfaces/SaveInterface.h"
 
-#include "Data/Enums/EotRMovementGait.h"
 #include "Data/Structs/EotRLandingInfo.h"
+#include "Data/DataAssets/Characters/EotRCharacterDataAsset.h"
 
+class UEotRAbilitySystemComponent;
 class UAbilitySystemComponent;
 class UInteractableComponent;
 class UInteractionComponent;
 class UCombatComponent;
 class UEotRTeamAgentComponent;
-class UGameplayAbility;
 
 #include "EotRBaseCharacter.generated.h"
-
-UCLASS()
-class ECHOESOFTHEROZLOM_API UEotRCharacterDataAsset : public UDataAsset
-{
-	GENERATED_BODY()
-
-public:
-	UEotRCharacterDataAsset()
-	{
-		GaitSpeedMap.Add(EEotRMovementGait::Walk, FVector(200.f, 180.f, 150.f));
-	}
-	UPROPERTY(EditAnywhere, Category = "Mesh")
-	TObjectPtr<USkeletalMesh> SkeletalMeshAsset = nullptr;
-
-	UPROPERTY(EditAnywhere, Category = "Mesh")
-	TSubclassOf<UAnimInstance> AnimInstanceClass = nullptr;
-
-	UPROPERTY(EditAnywhere, Category = "Movement", meta = (Tooltip = "Movement mode speeds: X = forward, Y = sideways, Z = backward"))
-	TMap<EEotRMovementGait, FVector> GaitSpeedMap;
-
-	UPROPERTY(EditAnywhere, Category = "Abilities")
-	TArray<TSubclassOf<UGameplayAbility>> GameplayAbilities;
-};
 
 UCLASS()
 class ECHOESOFTHEROZLOM_API AEotRBaseCharacter
@@ -73,7 +50,9 @@ public:
 	FEotRLandingInfo GetLastLandingInfo() const;
 
 	// IAbilitySystemInterface
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	UEotRAbilitySystemComponent* GetEotRASC() const;
 
 protected:
 	// AActor
@@ -90,7 +69,7 @@ protected:
 	
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+	TObjectPtr<UEotRAbilitySystemComponent> AbilitySystemComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 	TObjectPtr<UEotRTeamAgentComponent> EotRTeamAgentComponent = nullptr;

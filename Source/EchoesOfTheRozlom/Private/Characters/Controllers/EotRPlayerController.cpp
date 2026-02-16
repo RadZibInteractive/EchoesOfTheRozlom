@@ -46,7 +46,7 @@ void AEotRPlayerController::UpdateRotation(float DeltaTime)
 	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(ControlledPawn))
 	{
 		UAbilitySystemComponent* ASC = ASCInterface->GetAbilitySystemComponent();
-		if (ASC && ASC->HasMatchingGameplayTag(EotRTags::State_Movement_Traversing))
+		if (ASC && ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Traversing))
 		{
 			const FRotator CurrentControlRot = GetControlRotation();
 			const FRotator TargetControlRot = ControlledPawn->GetActorRotation();

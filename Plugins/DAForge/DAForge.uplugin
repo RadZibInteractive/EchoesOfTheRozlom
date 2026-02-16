@@ -1,0 +1,26 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "DAForge",
+  "Description": "Portable DataAsset conventions: base ForgeDataAsset + editor creation rules.",
+  "Category": "Other",
+  "CreatedBy": "Vladyslav Guba",
+  "CreatedByURL": "https://github.com/vladguba",
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "Modules": [
+    {
+      "Name": "DAForgeRuntime",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+      "Name": "DAForgeEditor",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ]
+}
