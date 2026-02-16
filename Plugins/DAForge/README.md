@@ -40,3 +40,5 @@ Each category defines:
 - Root Path
 - Default Icon
 - Open After Create
+
+---

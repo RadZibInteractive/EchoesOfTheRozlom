@@ -22,8 +22,10 @@ Before working with the repository:
 ```bash
 git lfs install
 git lfs pull
- ``` 
- 
+```
+
+---
+
 ## Workflow
 
 - `main` — stable development branch
@@ -49,3 +51,5 @@ This project includes internal editor tools:
 
 - **DAForge** – Structured DataAsset creation tool  
   [Plugins/DAForge/README.md](Plugins/DAForge/README.md)
+
+---
