@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
+using UnrealBuildTool.Rules;
 
 public class EchoesOfTheRozlom : ModuleRules
 {
@@ -8,49 +9,16 @@ public class EchoesOfTheRozlom : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] {
-			"Core",
-			"CoreUObject",
-			"Engine",
-			"InputCore",
-			"EnhancedInput",
-			"AIModule",
-			"UMG",
-            "GameplayAbilities",
-            "GameplayTags",
-            "GameplayTasks",
-            "NetCore",
-			"PhysicsCore",
-            "Niagara",
-            "DeveloperSettings",
-            "AnimGraphRuntime",
-			"MotionWarping"
-        });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayAbilities", "GameplayTasks", "GameplayTags", "DeveloperSettings", "AIModule", "AnimGraphRuntime", "MotionWarping", "Niagara" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
-		PublicIncludePaths.AddRange(new string[] {
-			"EchoesOfTheRozlom",
-            "EchoesOfTheRozlom/AI",
-            "EchoesOfTheRozlom/Characters",
-            "EchoesOfTheRozlom/Characters/Camera",
-            "EchoesOfTheRozlom/Characters/Components",
-            "EchoesOfTheRozlom/FrameworkBase",
-            "EchoesOfTheRozlom/Player",
-            "EchoesOfTheRozlom/Weapons",
-            "EchoesOfTheRozlom/Systems",
-            "EchoesOfTheRozlom/Systems/Anomalies",
-            "EchoesOfTheRozlom/Data/DataAssets",
-            "EchoesOfTheRozlom/Data/Structs",
-            "EchoesOfTheRozlom/Data/Enums",
-        });
+        // Uncomment if you are using Slate UI
+        // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 
-		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+        // Uncomment if you are using online features
+        // PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
-		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
-	}
+        // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+    }
 }
