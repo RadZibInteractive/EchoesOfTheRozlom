@@ -4,6 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
+#include "Components/EotRTraversalComponent.h"
 #include "FrameworkBase/EotRGameplayTags.h"
 
 void AEotRPlayerController::InitInputSystem()
@@ -49,7 +50,25 @@ void AEotRPlayerController::UpdateRotation(float DeltaTime)
 		if (ASC && ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Traversing))
 		{
 			const FRotator CurrentControlRot = GetControlRotation();
-			const FRotator TargetControlRot = ControlledPawn->GetActorRotation();
+			const FVector TargetControlVec = ControlledPawn->GetActorForwardVector();
+			
+			FRotator TargetControlRot = TargetControlVec.Rotation();
+
+			// TODO: Check posiibilities of ActorForwardVector != FrontLedgeNormal
+
+		    /*
+			if (UEotRTraversalComponent* TraversalComp = ControlledPawn->FindComponentByClass<UEotRTraversalComponent>())
+			{
+				FVector TargetNormal = TraversalComp->CachedResult.FrontLedgeNormal;
+				if (TargetNormal.Normalize())
+				{
+					const float AdditiveAngle = FVector::DotProduct(-TargetNormal, TargetControlVec);
+					const float AdditiveRad = FMath::Acos(AdditiveAngle);
+					const float AdditiveDeg = FMath::RadiansToDegrees(AdditiveRad);
+					TargetControlRot.Pitch += AdditiveDeg;
+				}
+			}
+		    */
 
 			const FRotator NewControlRot = FMath::RInterpTo(CurrentControlRot, TargetControlRot, DeltaTime, 3.0f);
 

@@ -45,8 +45,4 @@ private:
 
 	UFUNCTION()
 	void OnMontageFinished();
-
-private:
-	UPROPERTY()
-	FEotRTraversalCheckResult CachedResult;
 };

@@ -24,4 +24,8 @@ public:
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
     TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent = nullptr;
+
+public:
+    UPROPERTY(Transient)
+    FEotRTraversalCheckResult CachedResult;
 };

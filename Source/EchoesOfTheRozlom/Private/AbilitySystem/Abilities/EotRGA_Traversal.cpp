@@ -14,8 +14,6 @@
 
 UEotRGA_Traversal::UEotRGA_Traversal()
 {
-    InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
-
     FGameplayTagContainer Tags = GetAssetTags();
     Tags.AddTag(EotRGameplayTags::Ability_Movement_Traversal);
     SetAssetTags(Tags);
@@ -95,14 +93,15 @@ void UEotRGA_Traversal::ActivateAbility(
                 {
                     EotRCharacter->SetAbilityAnimTarget(false);
 
-                    CachedResult = Result;
+                    TraversalComp->CachedResult = Result;
                         
-                    Task->OnBlendedIn.AddDynamic(this, &UEotRGA_Traversal::OnMontageBlendedIn);
                     Task->OnBlendOut.AddDynamic(this, &UEotRGA_Traversal::OnMontageFinished);
                     Task->OnInterrupted.AddDynamic(this, &UEotRGA_Traversal::OnMontageFinished);
                     Task->OnCancelled.AddDynamic(this, &UEotRGA_Traversal::OnMontageFinished);
 
                     Task->ReadyForActivation();
+
+                    OnMontageBlendedIn();
 
                     return;
                 }
@@ -138,25 +137,30 @@ void UEotRGA_Traversal::CancelAbility(
         return;
     }
 
-    if (UCapsuleComponent* CapsuleComp = Character->GetCapsuleComponent())
+    if (UEotRTraversalComponent* TraversalComp = Character->FindComponentByClass<UEotRTraversalComponent>())
     {
-        if (UPrimitiveComponent* HitComp = CachedResult.HitComponent.Get())
+        if (UCapsuleComponent* CapsuleComp = Character->GetCapsuleComponent())
         {
-            CapsuleComp->IgnoreComponentWhenMoving(HitComp, false);
-        }
-    }
-
-    if (UCharacterMovementComponent* MoveComp = Character->GetCharacterMovement())
-    {
-        if (CachedResult.ActionType != EEotRTraversalActionType::Vault)
-        {
-            MoveComp->SetMovementMode(MOVE_Walking);
+            if (UPrimitiveComponent* HitComp = TraversalComp->CachedResult.HitComponent.Get())
+            {
+                CapsuleComp->IgnoreComponentWhenMoving(HitComp, false);
+            }
         }
 
-        if (!MoveComp->bOrientRotationToMovement)
+        if (UCharacterMovementComponent* MoveComp = Character->GetCharacterMovement())
         {
-            Character->bUseControllerRotationYaw = true;
+            if (TraversalComp->CachedResult.ActionType != EEotRTraversalActionType::Vault)
+            {
+                MoveComp->SetMovementMode(MOVE_Walking);
+            }
+
+            if (!MoveComp->bOrientRotationToMovement)
+            {
+                Character->bUseControllerRotationYaw = true;
+            }
         }
+
+        TraversalComp->CachedResult = FEotRTraversalCheckResult();
     }
 
     Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
@@ -172,21 +176,24 @@ void UEotRGA_Traversal::OnMontageBlendedIn()
 
     if (ACharacter* Character = Cast<ACharacter>(CurrentActorInfo->AvatarActor.Get()))
     {
-        if (UCapsuleComponent* CapsuleComp = Character->GetCapsuleComponent())
+        if (UEotRTraversalComponent* TraversalComp = Character->FindComponentByClass<UEotRTraversalComponent>())
         {
-            if (UPrimitiveComponent* HitComp = CachedResult.HitComponent.Get())
+            if (UCapsuleComponent* CapsuleComp = Character->GetCapsuleComponent())
             {
-                CapsuleComp->IgnoreComponentWhenMoving(HitComp, true);
+                if (UPrimitiveComponent* HitComp = TraversalComp->CachedResult.HitComponent.Get())
+                {
+                    CapsuleComp->IgnoreComponentWhenMoving(HitComp, true);
+                }
             }
-        }
 
-        if (UCharacterMovementComponent* MoveComp = Character->GetCharacterMovement())
-        {
-            MoveComp->SetMovementMode(MOVE_Flying);
-
-            if (!MoveComp->bOrientRotationToMovement)
+            if (UCharacterMovementComponent* MoveComp = Character->GetCharacterMovement())
             {
-                Character->bUseControllerRotationYaw = false;
+                MoveComp->SetMovementMode(MOVE_Flying);
+
+                if (!MoveComp->bOrientRotationToMovement)
+                {
+                    Character->bUseControllerRotationYaw = false;
+                }
             }
         }
     }

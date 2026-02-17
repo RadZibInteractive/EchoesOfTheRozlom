@@ -3,6 +3,7 @@
 #include "FrameworkBase/EotRLocalPlayerSubsystem.h"
 #include "Data/DataAssets/EotRInputTagConfig.h"
 
+#include "Components/PrimitiveComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/EotRCameraComponent.h"
@@ -235,12 +236,10 @@ float AEotRHumanCharacter::CalculateMoveInput(bool bIsRightAxis, float ActionVal
 	const FVector End = Start + (Dir * TraceLength);
 
 	FHitResult Hit;
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(CalculateMoveInputTrace), false);
-	Params.AddIgnoredActor(this);
 
-	const bool bHit = World->LineTraceSingleByChannel(Hit, Start, End, TraceChannel, Params);
+	const bool bHit = World->LineTraceSingleByChannel(Hit, Start, End, TraceChannel);
 
-	if (!bHit)
+	if (!bHit || !Hit.GetComponent() || Hit.GetComponent()->GetCollisionResponseToChannel(ECC_GameTraceChannel1) == ECR_Ignore)
 	{
 		return ActionValue;
 	}
