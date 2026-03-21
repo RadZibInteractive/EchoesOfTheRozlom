@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -8,22 +10,21 @@ struct FEotRTraversalCheckInput
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TraceForwardDirection"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector TraceForwardDirection = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TraceForwardDistance"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TraceForwardDistance = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TraceOriginOffset"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector TraceOriginOffset = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TraceEndOffset"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector TraceEndOffset = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TraceRadius"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TraceRadius = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "TraceHalfHeight"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TraceHalfHeight = 0.f;
 };

@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "FrameworkBase/EotRLocalPlayerSubsystem.h"
 
 #include "FrameworkBase/EotRDeveloperSettings.h"

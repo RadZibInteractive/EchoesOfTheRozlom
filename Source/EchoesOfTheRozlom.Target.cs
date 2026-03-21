@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// © 2026 RadZib. All rights reserved.
 
 using UnrealBuildTool;
 using System.Collections.Generic;

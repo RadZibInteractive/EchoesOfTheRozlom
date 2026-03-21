@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "Components/EotRTraversalComponent.h"
 
 bool UEotRTraversalComponent::TryFindTraversal_Implementation(FEotRTraversalCheckResult& OutResult)

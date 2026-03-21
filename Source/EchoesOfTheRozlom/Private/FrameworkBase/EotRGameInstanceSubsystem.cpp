@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "FrameworkBase/EotRGameInstanceSubsystem.h"
 
 #include "FrameworkBase/EotRDeveloperSettings.h"

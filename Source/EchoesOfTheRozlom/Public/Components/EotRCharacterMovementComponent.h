@@ -42,7 +42,7 @@ private:
 private:
 	// Movement
 	UPROPERTY(Transient)
-	TObjectPtr<const UCurveFloat> StrafeSpeedMapCurve = nullptr;
+	TObjectPtr<UCurveFloat> StrafeSpeedMapCurve = nullptr;
 
 	TMap<EEotRMovementGait, FVector> GaitSpeedMap;
 	EEotRMovementGait MovementGait = EEotRMovementGait::Walk;

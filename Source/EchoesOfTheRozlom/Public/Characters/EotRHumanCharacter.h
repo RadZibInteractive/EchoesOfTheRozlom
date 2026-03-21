@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -17,6 +19,7 @@ class USkeletalMeshComponent;
 class UEotRCameraComponent;
 struct FInputActionValue;
 
+class UEotRInteractionComponent;
 class UInventoryComponent;
 class UEquipmentComponent;
 class UWeaponComponent;
@@ -39,10 +42,10 @@ public:
 
 	// Mesh
 	virtual void SetAbilityAnimTarget(bool bUseAlternative) override;
-	USkeletalMeshComponent* GetUpperMesh() { return UpperMesh; }
 
 	// Camera
 	UEotRCameraComponent* GetFirstPersonCamera() { return FirstPersonCamera; }
+
 protected:
 	// AActor
 	virtual void PostInitializeComponents() override;
@@ -53,7 +56,7 @@ protected:
 private:
 	// Input
 	void OnInputTagTriggered(const FInputActionValue& ActionValue, FGameplayTag InputTag);
-	float CalculateMoveInput(bool bIsRightAxis, float ActionValue, ECollisionChannel TraceChannel = ECC_Visibility) const;
+	float CalculateMoveInput(bool bIsRightAxis, float ActionValue, ECollisionChannel TraceChannel = ECC_GameTraceChannel1) const;
 	float CalculateCameraInput(bool bIsYawAxis, float ActionValue) const;
 
 protected:
@@ -62,16 +65,19 @@ protected:
 	TObjectPtr<USkeletalMeshComponent> UpperMesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
-	TObjectPtr<USkeletalMeshComponent> HeadMesh = nullptr;
+	TArray<TObjectPtr<USkeletalMeshComponent>> ViewPartMeshes;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
-	TArray<TObjectPtr<USkeletalMeshComponent>> PartMeshes;
+	TObjectPtr<USkeletalMeshComponent> ViewHeadMesh = nullptr;
 
 	// Camera
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 	TObjectPtr<UEotRCameraComponent> FirstPersonCamera = nullptr;
 
 	// Components
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
+	TObjectPtr<UEotRInteractionComponent> InteractionComponent = nullptr;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 	TObjectPtr<UInventoryComponent> InventoryComponent = nullptr;
 
@@ -86,6 +92,4 @@ protected:
 
 private:
 	FName FirstPersonCameraSocket;
-
-	FName WeaponSocket;
 };

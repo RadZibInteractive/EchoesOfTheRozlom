@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -23,8 +25,8 @@ public:
 private:
 	// Input
 	UPROPERTY(Transient)
-	TObjectPtr<const UInputMappingContext> InputMappingContext = nullptr;
+	TObjectPtr<UInputMappingContext> InputMappingContext = nullptr;
 
 	UPROPERTY(Transient)
-	TObjectPtr<const UEotRInputTagConfig> InputTagConfig = nullptr;
+	TObjectPtr<UEotRInputTagConfig> InputTagConfig = nullptr;
 };

@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,8 +9,7 @@
 #include "Engine/DataAsset.h"
 
 #include "Interfaces/EotRTeamAgentInterface.h"
-#include "Interfaces/InteractableInterface.h"
-#include "Interfaces/InteractionInterface.h"
+#include "Interfaces/EotRInteractionInterface.h"
 #include "Interfaces/CombatInterface.h"
 #include "Interfaces/SaveInterface.h"
 
@@ -17,8 +18,6 @@
 
 class UEotRAbilitySystemComponent;
 class UAbilitySystemComponent;
-class UInteractableComponent;
-class UInteractionComponent;
 class UCombatComponent;
 class UEotRTeamAgentComponent;
 
@@ -29,8 +28,7 @@ class ECHOESOFTHEROZLOM_API AEotRBaseCharacter
 	: public ACharacter
 	, public IAbilitySystemInterface
 	, public IEotRTeamAgentInterface
-	, public IInteractableInterface
-	, public IInteractionInterface
+	, public IEotRInteractionInterface
 	, public ICombatInterface
 	, public ISaveInterface
 {
@@ -43,16 +41,14 @@ public:
 	virtual void SetAbilityAnimTarget(bool bUseAlternative) {}
 
 	// AnimBP
-	UFUNCTION(BlueprintPure, Category = "EotR|Animation")
+	UFUNCTION(BlueprintPure, Category = "EotR|Movement")
 	EEotRMovementGait GetLastMovementGait() const;
 
-	UFUNCTION(BlueprintPure, Category = "EotR|Animation")
+	UFUNCTION(BlueprintPure, Category = "EotR|Movement")
 	FEotRLandingInfo GetLastLandingInfo() const;
 
 	// IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
-	UEotRAbilitySystemComponent* GetEotRASC() const;
 
 protected:
 	// AActor
@@ -68,17 +64,11 @@ protected:
 	TObjectPtr<UEotRCharacterDataAsset> CharacterData = nullptr;
 	
 	// Components
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 	TObjectPtr<UEotRAbilitySystemComponent> AbilitySystemComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
-	TObjectPtr<UEotRTeamAgentComponent> EotRTeamAgentComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
-	TObjectPtr<UInteractableComponent> InteractableComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
-	TObjectPtr<UInteractionComponent> InteractionComponent = nullptr;
+	TObjectPtr<UEotRTeamAgentComponent> TeamAgentComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default")
 	TObjectPtr<UCombatComponent> CombatComponent = nullptr;

@@ -1,8 +1,11 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "Characters/EotRHumanCharacter.h"
 
 #include "FrameworkBase/EotRLocalPlayerSubsystem.h"
 #include "Data/DataAssets/EotRInputTagConfig.h"
 
+#include "Components/EotRInteractionComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -21,6 +24,39 @@
 
 #include "AbilitySystem/EotRAbilitySystemComponent.h"
 
+AEotRHumanCharacter::AEotRHumanCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+	InteractionComponent = CreateDefaultSubobject<UEotRInteractionComponent>(TEXT("InteractionComponent"));
+
+	USkeletalMeshComponent* LowerMesh = GetMesh();
+
+	UpperMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("UpperMesh"));
+	UpperMesh->SetupAttachment(LowerMesh);
+	UpperMesh->AddTickPrerequisiteComponent(LowerMesh);
+
+	LowerMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LowerMesh->SetVisibility(false);
+	LowerMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+
+	UpperMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	UpperMesh->SetVisibility(false);
+	UpperMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+
+	ViewHeadMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ViewHeadMesh"));
+	ViewHeadMesh->SetupAttachment(UpperMesh);
+	ViewHeadMesh->AddTickPrerequisiteComponent(UpperMesh);
+	ViewHeadMesh->SetCollisionProfileName(TEXT("CharacterMesh"));
+	ViewHeadMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	ViewHeadMesh->SetOwnerNoSee(true);
+	ViewHeadMesh->bCastHiddenShadow = true;
+
+	FirstPersonCamera = CreateDefaultSubobject<UEotRCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCamera->SetupAttachment(ViewHeadMesh);
+	FirstPersonCamera->bUsePawnControlRotation = true;
+}
 
 void AEotRHumanCharacter::PostInitializeComponents()
 {
@@ -33,9 +69,6 @@ void AEotRHumanCharacter::PostInitializeComponents()
 		return;
 	}
 
-	FirstPersonCameraSocket = HumanData->FirstPersonCameraSocketName;
-	WeaponSocket = HumanData->WeaponSocketName;
-
 	if (HumanData->UpperMeshAsset)
 	{
 		UpperMesh->SetSkeletalMesh(HumanData->UpperMeshAsset);
@@ -46,75 +79,41 @@ void AEotRHumanCharacter::PostInitializeComponents()
 		UpperMesh->SetAnimInstanceClass(HumanData->UpperAnimInstanceClass);
 	}
 
-	if (HumanData->HeadMeshAsset)
+	if (HumanData->ViewHeadMeshAsset)
 	{
-		HeadMesh->SetSkeletalMesh(HumanData->HeadMeshAsset);
+		ViewHeadMesh->SetSkeletalMesh(HumanData->ViewHeadMeshAsset);
 	}
 
-	for (int32 i = 0; i < HumanData->PartMeshesAssets.Num(); ++i)
+	if (HumanData->ViewAnimInstanceClass)
 	{
-		const FName PartName = *FString::Printf(TEXT("PartMesh_%d"), i);
+		ViewHeadMesh->SetAnimInstanceClass(HumanData->ViewAnimInstanceClass);
+	}
+
+	for (int32 i = 0; i < HumanData->ViewPartMeshesAssets.Num(); ++i)
+	{
+		const FName PartName = *FString::Printf(TEXT("ViewPartMesh_%d"), i);
 		USkeletalMeshComponent* NewComp =
 			NewObject<USkeletalMeshComponent>(this, USkeletalMeshComponent::StaticClass(), PartName);
 
 		NewComp->RegisterComponent();
-		NewComp->AttachToComponent(UpperMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-		NewComp->SetSkeletalMesh(HumanData->PartMeshesAssets[i]);
-		NewComp->SetLeaderPoseComponent(UpperMesh);
+		NewComp->AttachToComponent(ViewHeadMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		NewComp->SetSkeletalMesh(HumanData->ViewPartMeshesAssets[i]);
+		NewComp->SetLeaderPoseComponent(ViewHeadMesh);
 		NewComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-		PartMeshes.Add(NewComp);
+		ViewPartMeshes.Add(NewComp);
 	}
 
+	FirstPersonCameraSocket = HumanData->FirstPersonCameraSocketName;
+
 	FirstPersonCamera->AttachToComponent(
-		UpperMesh,
+		ViewHeadMesh,
 		FAttachmentTransformRules::SnapToTargetNotIncludingScale,
 		FirstPersonCameraSocket
 	);
-	FirstPersonCamera->SetRelativeRotation(FRotator(0.f, 90.f, -90.f));
-}
-
-void AEotRHumanCharacter::SetAbilityAnimTarget(bool bUseAlternative)
-{
-	if (FGameplayAbilityActorInfo* ActorInfo = AbilitySystemComponent->AbilityActorInfo.Get())
-	{
-		if (bUseAlternative)
-		{
-			ActorInfo->SkeletalMeshComponent = UpperMesh;
-			ActorInfo->AffectedAnimInstanceTag = FName(TEXT("Upper"));
-		}
-		else
-		{
-			ActorInfo->SkeletalMeshComponent = GetMesh();
-			ActorInfo->AffectedAnimInstanceTag = NAME_None;
-		}
-	}
-}
-
-// Sets default values
-AEotRHumanCharacter::AEotRHumanCharacter(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-{
-	// Setup
-	USkeletalMeshComponent* LowerMesh = GetMesh();
-
-	UpperMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("UpperMesh"));
-	UpperMesh->SetupAttachment(LowerMesh);
-	UpperMesh->AddTickPrerequisiteComponent(LowerMesh);
-	LowerMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	LowerMesh->SetVisibility(false);
-	LowerMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
-
-	HeadMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("HeadMesh"));
-	HeadMesh->SetupAttachment(UpperMesh);
-	HeadMesh->SetLeaderPoseComponent(UpperMesh);
-	HeadMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	HeadMesh->SetOwnerNoSee(true);
-	HeadMesh->bCastHiddenShadow = true;
-
-	FirstPersonCamera = CreateDefaultSubobject<UEotRCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCamera->SetupAttachment(UpperMesh);
-	FirstPersonCamera->bUsePawnControlRotation = true;
+	FirstPersonCamera->SetRelativeLocation(FVector(-4.935916f, 7.721559f, 0.178092f));
+	FirstPersonCamera->SetRelativeRotation(FRotator(-90.000098f, 1.321171f, 90.001102f));
+	FirstPersonCamera->SetRelativeScale3D(FVector(0.55f, 0.55f, 0.55f));
 }
 
 void AEotRHumanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -151,6 +150,21 @@ void AEotRHumanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		}
 		
 		EnhancedInput->BindAction(Entry.InputAction, ETriggerEvent::Triggered, this, &AEotRHumanCharacter::OnInputTagTriggered, Entry.InputTag);
+	}
+}
+
+void AEotRHumanCharacter::SetAbilityAnimTarget(bool bUseAlternative)
+{
+	if (FGameplayAbilityActorInfo* ActorInfo = AbilitySystemComponent->AbilityActorInfo.Get())
+	{
+		if (bUseAlternative)
+		{
+			ActorInfo->SkeletalMeshComponent = UpperMesh;
+		}
+		else
+		{
+			ActorInfo->SkeletalMeshComponent = GetMesh();
+		}
 	}
 }
 
@@ -224,8 +238,8 @@ float AEotRHumanCharacter::CalculateMoveInput(bool bIsRightAxis, float ActionVal
 		Dir = -Dir;
 	}
 
-	const float CapsuleRadius = Capsule->GetScaledCapsuleRadius();
-	FVector Start = GetActorLocation() + (Dir * CapsuleRadius);
+	const float ClosestRadius = Capsule->GetScaledCapsuleRadius();
+	FVector Start = GetActorLocation() + (Dir * ClosestRadius);
 
 	const float HalfHeight = Capsule->GetScaledCapsuleHalfHeight();
 	const float MaxStepHeight = MoveComp->MaxStepHeight;
@@ -239,7 +253,7 @@ float AEotRHumanCharacter::CalculateMoveInput(bool bIsRightAxis, float ActionVal
 
 	const bool bHit = World->LineTraceSingleByChannel(Hit, Start, End, TraceChannel);
 
-	if (!bHit || !Hit.GetComponent() || Hit.GetComponent()->GetCollisionResponseToChannel(ECC_GameTraceChannel1) == ECR_Ignore)
+	if (!bHit)
 	{
 		return ActionValue;
 	}

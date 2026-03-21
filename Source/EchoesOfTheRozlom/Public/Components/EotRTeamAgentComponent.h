@@ -1,4 +1,4 @@
-
+// © 2026 RadZib. All rights reserved.
 
 #pragma once
 
@@ -6,8 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "EotRTeamAgentComponent.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS()
 class ECHOESOFTHEROZLOM_API UEotRTeamAgentComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -15,15 +14,4 @@ class ECHOESOFTHEROZLOM_API UEotRTeamAgentComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UEotRTeamAgentComponent();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
-	
 };

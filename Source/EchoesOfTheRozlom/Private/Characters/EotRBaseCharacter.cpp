@@ -12,13 +12,16 @@
 AEotRBaseCharacter::AEotRBaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UEotRCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	UCapsuleComponent* Capsule = GetCapsuleComponent();
 	Capsule->SetCapsuleHalfHeight(86.f);
-	Capsule->SetCapsuleRadius(50.f);
-
-	USkeletalMeshComponent* LowerMesh = GetMesh();
-	LowerMesh->SetRelativeLocation(FVector(0.f, 0.f, -Capsule->GetUnscaledCapsuleHalfHeight() - 2.f));
-	LowerMesh->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
+	Capsule->SetCapsuleRadius(30.f);
+	Capsule->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Ignore);
+		
+	USkeletalMeshComponent* BodyMesh = GetMesh();
+	BodyMesh->SetRelativeLocation(FVector(0.f, 0.f, -Capsule->GetUnscaledCapsuleHalfHeight() - 2.f));
+	BodyMesh->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
 	AbilitySystemComponent = CreateDefaultSubobject<UEotRAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 }
@@ -60,11 +63,6 @@ UAbilitySystemComponent* AEotRBaseCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComponent.Get();
 }
 
-UEotRAbilitySystemComponent* AEotRBaseCharacter::GetEotRASC() const
-{
-	return AbilitySystemComponent.Get();
-}
-
 void AEotRBaseCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -76,16 +74,16 @@ void AEotRBaseCharacter::PostInitializeComponents()
 		return;
 	}
 
-	USkeletalMeshComponent* FullMesh = GetMesh();
+	USkeletalMeshComponent* BodyMesh = GetMesh();
 
 	if (CharacterData->SkeletalMeshAsset)
 	{
-		FullMesh->SetSkeletalMesh(CharacterData->SkeletalMeshAsset);
+		BodyMesh->SetSkeletalMesh(CharacterData->SkeletalMeshAsset);
 	}
 
 	if (CharacterData->AnimInstanceClass)
 	{
-		FullMesh->SetAnimInstanceClass(CharacterData->AnimInstanceClass);
+		BodyMesh->SetAnimInstanceClass(CharacterData->AnimInstanceClass);
 	}
 
 	if (UEotRCharacterMovementComponent* CharacterMovementComponent = Cast<UEotRCharacterMovementComponent>(GetCharacterMovement()))

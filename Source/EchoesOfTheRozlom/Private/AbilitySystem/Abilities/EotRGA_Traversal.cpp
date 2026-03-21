@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "AbilitySystem/Abilities/EotRGA_Traversal.h"
 #include "FrameworkBase/EotRGameplayTags.h"
 #include "GameFramework/Character.h"
@@ -51,13 +53,13 @@ void UEotRGA_Traversal::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo
 }
 
 void UEotRGA_Traversal::ActivateAbility(
-	const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo,
-	const FGameplayEventData* TriggerEventData
+    const FGameplayAbilitySpecHandle Handle,
+    const FGameplayAbilityActorInfo* ActorInfo,
+    const FGameplayAbilityActivationInfo ActivationInfo,
+    const FGameplayEventData* TriggerEventData
 )
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+    Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
     AEotRBaseCharacter* EotRCharacter = Cast<AEotRBaseCharacter>(ActorInfo->AvatarActor.Get());
     if (!EotRCharacter)
@@ -94,7 +96,7 @@ void UEotRGA_Traversal::ActivateAbility(
                     EotRCharacter->SetAbilityAnimTarget(false);
 
                     TraversalComp->CachedResult = Result;
-                        
+
                     Task->OnBlendOut.AddDynamic(this, &UEotRGA_Traversal::OnMontageFinished);
                     Task->OnInterrupted.AddDynamic(this, &UEotRGA_Traversal::OnMontageFinished);
                     Task->OnCancelled.AddDynamic(this, &UEotRGA_Traversal::OnMontageFinished);
@@ -149,7 +151,11 @@ void UEotRGA_Traversal::CancelAbility(
 
         if (UCharacterMovementComponent* MoveComp = Character->GetCharacterMovement())
         {
-            if (TraversalComp->CachedResult.ActionType != EEotRTraversalActionType::Vault)
+            if (TraversalComp->CachedResult.ActionType == EEotRTraversalActionType::Vault)
+            {
+                MoveComp->SetMovementMode(MOVE_Falling);
+            }
+            else
             {
                 MoveComp->SetMovementMode(MOVE_Walking);
             }

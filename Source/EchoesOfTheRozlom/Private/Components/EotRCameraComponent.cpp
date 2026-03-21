@@ -1,3 +1,5 @@
+// © 2025 RadZib. All rights reserved.
+
 #include "Components/EotRCameraComponent.h"
 
 void UEotRCameraComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

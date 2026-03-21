@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "AbilitySystem/Abilities/EotRGA_Run.h"
 #include "FrameworkBase/EotRGameplayTags.h"
 #include "AbilitySystemComponent.h"

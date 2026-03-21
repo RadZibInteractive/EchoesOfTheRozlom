@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -8,7 +10,6 @@ struct FEotRLandingInfo
 {
 	GENERATED_BODY()
 
-public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bJustLanded = false;
 

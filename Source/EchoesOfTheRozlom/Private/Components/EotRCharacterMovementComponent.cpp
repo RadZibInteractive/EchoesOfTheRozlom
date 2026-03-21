@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "Components/EotRCharacterMovementComponent.h"
 
 #include "FrameworkBase/EotRDeveloperSettings.h"
@@ -69,7 +71,7 @@ void UEotRCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previo
 		PlayFoley(EotRGameplayTags::Foley_Event_Land, VolumeMultiplier);
 
 		if (UWorld* World = GetWorld())
-		{	
+		{
 			World->GetTimerManager().SetTimer(
 				JustLandedTimerHandle,
 				this,
@@ -78,7 +80,7 @@ void UEotRCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previo
 				false
 			);
 		}
-	}
+	}	
 }
 
 void UEotRCharacterMovementComponent::PlayFoley(const FGameplayTag& Tag, float VolumeMultiplier)
@@ -147,7 +149,7 @@ void UEotRCharacterMovementComponent::UpdateMovement(float DeltaTime)
 	{
 		return;
 	}
-
+	
 	// Determine and save movement mode based on GAS state tags (Walk/Run/Sprint)
 	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(PawnOwner))
 	{
@@ -199,7 +201,7 @@ void UEotRCharacterMovementComponent::UpdateMovement(float DeltaTime)
 		FVector2D(800.f, 300.f),
 		SpeedXY
 	);
-	MaxAcceleration = (MovementGait == EEotRMovementGait::Sprint) ? MappedAcceleration : 800.f;
+	MaxAcceleration = (MovementGait == EEotRMovementGait::Run) ? MappedAcceleration : 800.f;
 
 	// Adjust braking deceleration based on whether there is movement input
 	const bool HasMovementInput = !GetPendingInputVector().IsNearlyZero();

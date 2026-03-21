@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,52 +11,51 @@ struct FEotRTraversalCheckResult
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ActionType"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EEotRTraversalActionType ActionType = EEotRTraversalActionType::None;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "HasFrontLedge"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool HasFrontLedge = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "FrontLedgeLocation"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector FrontLedgeLocation = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "FrontLedgeNormal"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector FrontLedgeNormal = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "HasBackLedge"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool HasBackLedge = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "BackLedgeLocation"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector BackLedgeLocation = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "BackLedgeNormal"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector BackLedgeNormal = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "HasBackFloor"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool HasBackFloor = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "BackFloorLocation"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector BackFloorLocation = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ObstacleHeight"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ObstacleHeight = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ObstacleDepth"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ObstacleDepth = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "BackLedgeHeight"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BackLedgeHeight = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "HitComponent"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UPrimitiveComponent> HitComponent = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "ChosenMontage"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAnimMontage> ChosenMontage = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "StartTime"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float StartTime = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "PlayRate"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float PlayRate = 1.f;
 };

@@ -1,3 +1,5 @@
+// © 2026 RadZib. All rights reserved.
+
 #include "Characters/Controllers/EotRPlayerController.h"
 #include "FrameworkBase/EotRLocalPlayerSubsystem.h"
 #include "InputMappingContext.h"
@@ -50,25 +52,7 @@ void AEotRPlayerController::UpdateRotation(float DeltaTime)
 		if (ASC && ASC->HasMatchingGameplayTag(EotRGameplayTags::State_Movement_Traversing))
 		{
 			const FRotator CurrentControlRot = GetControlRotation();
-			const FVector TargetControlVec = ControlledPawn->GetActorForwardVector();
-			
-			FRotator TargetControlRot = TargetControlVec.Rotation();
-
-			// TODO: Check posiibilities of ActorForwardVector != FrontLedgeNormal
-
-		    /*
-			if (UEotRTraversalComponent* TraversalComp = ControlledPawn->FindComponentByClass<UEotRTraversalComponent>())
-			{
-				FVector TargetNormal = TraversalComp->CachedResult.FrontLedgeNormal;
-				if (TargetNormal.Normalize())
-				{
-					const float AdditiveAngle = FVector::DotProduct(-TargetNormal, TargetControlVec);
-					const float AdditiveRad = FMath::Acos(AdditiveAngle);
-					const float AdditiveDeg = FMath::RadiansToDegrees(AdditiveRad);
-					TargetControlRot.Pitch += AdditiveDeg;
-				}
-			}
-		    */
+			const FRotator TargetControlRot = ControlledPawn->GetActorRotation();
 
 			const FRotator NewControlRot = FMath::RInterpTo(CurrentControlRot, TargetControlRot, DeltaTime, 3.0f);
 
