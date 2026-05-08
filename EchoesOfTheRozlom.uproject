@@ -18,6 +18,10 @@
 	],
 	"Plugins": [
 		{
+			"Name": "EchoesForge",
+			"Enabled": true
+		},
+		{
 			"Name": "GameplayAbilities",
 			"Enabled": true
 		},
