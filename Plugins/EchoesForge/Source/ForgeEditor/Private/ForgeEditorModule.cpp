@@ -38,12 +38,13 @@ void FForgeEditorModule::RegisterMenus()
 			UToolMenu* Menu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu.Tools");
 			FToolMenuSection& Section = Menu->FindOrAddSection(
 				"ForgeTools", LOCTEXT("ForgeSection", "Echoes Forge"));
+			Section.InsertPosition = FToolMenuInsert(NAME_None, EToolMenuInsertType::First);
 
 			Section.AddMenuEntry(
 				FName("OpenForgeEditor"),
-				LOCTEXT("OpenForge",        "Open Echoes Forge"),
+				LOCTEXT("OpenForge",        "Echoes Forge"),
 				LOCTEXT("OpenForgeTooltip", "Launch the Echoes Forge narrative content editor"),
-				FSlateIcon(),
+				FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Edit"),
 				FUIAction(FExecuteAction::CreateLambda([]()
 				{
 					FGlobalTabmanager::Get()->TryInvokeTab(FForgeEditorModule::ForgeTabId);
